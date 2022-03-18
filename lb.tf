@@ -27,6 +27,7 @@ resource "aws_lb_listener" "suricata" {
   load_balancer_arn = aws_lb.suricata.id
   port              = 4789
   protocol          = "UDP"
+  tags              = var.tags
   default_action {
     target_group_arn = aws_lb_target_group.suricata.id
     type             = "forward"

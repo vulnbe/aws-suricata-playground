@@ -11,6 +11,7 @@ resource "aws_iam_role_policy_attachment" "mirror_lambda_logs" {
 resource "aws_iam_policy" "mirror_lambda_logs" {
   name   = "${var.lambda_name}LogPolicy"
   policy = data.aws_iam_policy_document.mirror_lambda_logs.json
+  tags   = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "mirror_lambda_actions" {
@@ -21,12 +22,12 @@ resource "aws_iam_role_policy_attachment" "mirror_lambda_actions" {
 resource "aws_iam_policy" "mirror_lambda_actions" {
   name   = "${var.lambda_name}ActionsPolicy"
   policy = data.aws_iam_policy_document.mirror_lambda_actions.json
+  tags   = var.tags
 }
 
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
-
     principals {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]

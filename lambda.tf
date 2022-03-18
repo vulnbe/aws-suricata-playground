@@ -5,12 +5,12 @@ resource "aws_lambda_function" "mirror_lambda" {
   handler          = "lambda_function.lambda_handler"
   source_code_hash = filebase64sha256("${data.archive_file.mirror_lambda.output_path}")
   runtime          = "python3.9"
-
+  tags             = var.tags
   environment {
     variables = {
       LAMBDA_LOG_LEVEL = "INFO"
       MIRROR_FILTER_ID = "${aws_ec2_traffic_mirror_filter.all_non_local.id}"
-      MIRROR_SKIP_TAGS = "application=suricata"
+      MIRROR_SKIP_TAGS = join(",", [for k, v in var.skip_tags : "${k}=${v}"])
       MIRROR_TARGET_ID = "${aws_ec2_traffic_mirror_target.suricata_nlb.id}"
     }
   }
@@ -38,7 +38,6 @@ resource "aws_lambda_permission" "mirror_lambda_from_cloudwatch" {
 resource "aws_cloudwatch_event_rule" "ec2_startup" {
   name        = "CaptureEC2StartupEvents"
   description = "Capture all EC2 startup events"
-
   event_pattern = <<PATTERN
 {
   "source": ["aws.ec2"],
@@ -57,7 +56,7 @@ resource "aws_cloudwatch_log_group" "mirror_lambda" {
 
 data "archive_file" "mirror_lambda" {
   type        = "zip"
-  output_path = "${path.module}/files/mirror_lambda.zip"
+  output_path = "${path.module}/.terraform/temp/mirror_lambda.zip"
   source {
     content  = data.http.lambda.body
     filename = "lambda_function.py"

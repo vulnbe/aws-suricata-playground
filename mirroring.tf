@@ -5,6 +5,7 @@ resource "aws_ec2_traffic_mirror_filter" "all_non_local" {
 resource "aws_ec2_traffic_mirror_target" "suricata_nlb" {
   description               = "Suricata NLB target"
   network_load_balancer_arn = aws_lb.suricata.arn
+  tags                      = var.tags
 }
 
 resource "aws_ec2_traffic_mirror_filter_rule" "rulein" {

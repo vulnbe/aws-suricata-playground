@@ -8,7 +8,7 @@ resource "aws_instance" "suricata" {
   key_name               = var.ssh_key
   vpc_security_group_ids = [aws_security_group.suricata.id]
   user_data              = local.user_data
-  tags                   = var.tags
+  tags                   = var.suricata_tags
 }
 
 locals {

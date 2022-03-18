@@ -7,7 +7,8 @@ variable "aws_profile" {
 }
 
 variable "subnet_id" {
-  type = string
+  description = "Subnet ID for Suricata deployment"
+  type        = string
 }
 
 variable "instance_type" {
@@ -16,18 +17,31 @@ variable "instance_type" {
 }
 
 variable "instance_profile" {
-  default = ""
-  type    = string
+  description = "Instance profile for Suricata"
+  default     = ""
+  type        = string
 }
 
 variable "ssh_key" {
-  default = ""
-  type    = string
+  description = "SSH key for Suricata"
+  default     = ""
+  type        = string
 }
 
 variable "tags" {
-  default = {}
-  type    = map(any)
+  description = "Tags to be set for all resources"
+  default     = {}
+  type        = map(any)
+}
+
+variable "suricata_tags" {
+  description = "Tags to be set for suricata instance"
+  type        = map(any)
+}
+
+variable "skip_tags" {
+  description = "Mirroring session won't be set up for instances with these tags"
+  type        = map(any)
 }
 
 variable "vxlan_port" {
