@@ -1,6 +1,5 @@
 locals {
   aws_region    = "eu-central-1"
-  aws_profile   = "security-tf"
   subnet_cidr   = "172.31.129.0/24"
   vpc_id        = "default"
   instance_type = "t3.medium"
@@ -12,7 +11,6 @@ locals {
 module "suricata" {
   source           = "../"
   aws_region       = local.aws_region
-  aws_profile      = local.aws_profile
   subnet_id        = aws_subnet.suricata.id
   instance_profile = aws_iam_instance_profile.ssm_managed_instance.name
   tags             = local.tags

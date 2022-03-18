@@ -2,10 +2,6 @@ variable "aws_region" {
   type = string
 }
 
-variable "aws_profile" {
-  type = string
-}
-
 variable "subnet_id" {
   description = "Subnet ID for Suricata deployment"
   type        = string
