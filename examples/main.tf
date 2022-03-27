@@ -1,21 +1,23 @@
 locals {
-  aws_region    = "eu-central-1"
-  subnet_cidr   = "172.31.129.0/24"
-  vpc_id        = "default"
-  instance_type = "t3.medium"
-  tags          = { team = "security" }
-  skip_tags     = { mirror = "false" }
-  suricata_tags = merge(local.tags, local.skip_tags, { application = "suricata" })
+  aws_region         = "eu-central-1"
+  subnet_cidr        = "172.31.129.0/24"
+  vpc_id             = "default"
+  instance_type      = "t3.medium"
+  tags               = { team = "security" }
+  skip_tags          = { mirror = "false" }
+  suricata_tags      = merge(local.tags, local.skip_tags, { application = "suricata" })
+  mirror_all_traffic = false
 }
 
 module "suricata" {
-  source           = "../"
-  aws_region       = local.aws_region
-  subnet_id        = aws_subnet.suricata.id
-  instance_profile = aws_iam_instance_profile.ssm_managed_instance.name
-  tags             = local.tags
-  suricata_tags    = local.suricata_tags
-  skip_tags        = local.skip_tags
+  source             = "../"
+  aws_region         = local.aws_region
+  subnet_id          = aws_subnet.suricata.id
+  instance_profile   = aws_iam_instance_profile.ssm_managed_instance.name
+  tags               = local.tags
+  suricata_tags      = local.suricata_tags
+  skip_tags          = local.skip_tags
+  mirror_all_traffic = local.mirror_all_traffic
 }
 
 resource "aws_instance" "suricata_test" {

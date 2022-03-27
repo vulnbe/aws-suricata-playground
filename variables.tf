@@ -54,3 +54,9 @@ variable "lambda_name" {
   default = "TrafficMirrorLambda"
   type    = string
 }
+
+variable "mirror_all_traffic" {
+  description = "Mirrors all traffic if set to true"
+  default = false
+  type    = bool
+}

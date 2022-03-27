@@ -9,6 +9,7 @@ resource "aws_ec2_traffic_mirror_target" "suricata_nlb" {
 }
 
 resource "aws_ec2_traffic_mirror_filter_rule" "rulein" {
+  count                    = var.mirror_all_traffic ? 0 : 1
   description              = "Reject local traffic"
   traffic_mirror_filter_id = aws_ec2_traffic_mirror_filter.all_non_local.id
   destination_cidr_block   = "0.0.0.0/0"
@@ -29,6 +30,7 @@ resource "aws_ec2_traffic_mirror_filter_rule" "rulein2" {
 }
 
 resource "aws_ec2_traffic_mirror_filter_rule" "rule_out" {
+  count                    = var.mirror_all_traffic ? 0 : 1
   description              = "Reject local egress traffic"
   traffic_mirror_filter_id = aws_ec2_traffic_mirror_filter.all_non_local.id
   destination_cidr_block   = data.aws_vpc.target.cidr_block
